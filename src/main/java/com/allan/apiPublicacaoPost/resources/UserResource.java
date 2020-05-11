@@ -1,6 +1,8 @@
 package com.allan.apiPublicacaoPost.resources;
 
 import com.allan.apiPublicacaoPost.domain.User;
+import com.allan.apiPublicacaoPost.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,10 @@ import java.util.List;
 @RequestMapping(value = "/users")
 public class UserResource {
 
+    // Injeção de UserService
+    @Autowired
+    private UserService service;
+
     // Definindo que será uma operação do tipo GET
     @GetMapping
     /*
@@ -24,10 +30,7 @@ public class UserResource {
         respostas Http, ja com possiveis cabeçalhos, possíveis erros, etc.
      */
     public ResponseEntity<List<User>> findAll() {
-        User maria = new User("1", "Maria Brown", "maria@gmail.com");
-        User alex = new User("2", "Alex Green", "alex@gmail.com");
-        List<User> list = new ArrayList<>();
-        list.addAll(Arrays.asList(maria, alex));
+        List<User> list = service.findAll();
         return ResponseEntity.ok().body(list);
     }
 
