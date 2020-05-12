@@ -1,6 +1,7 @@
 package com.allan.apiPublicacaoPost.resources;
 
 import com.allan.apiPublicacaoPost.domain.User;
+import com.allan.apiPublicacaoPost.dto.UserDTO;
 import com.allan.apiPublicacaoPost.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 // Determina que a classe terá um controlador Rest
 @RestController
@@ -29,9 +31,10 @@ public class UserResource {
         O retorno do tipo ResponseEntity permite que o retorno encapsular toda uma estrutura necessária para retornar
         respostas Http, ja com possiveis cabeçalhos, possíveis erros, etc.
      */
-    public ResponseEntity<List<User>> findAll() {
+    public ResponseEntity<List<UserDTO>> findAll() {
         List<User> list = service.findAll();
-        return ResponseEntity.ok().body(list);
+        List<UserDTO> listDto = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDto);
     }
 
 }
